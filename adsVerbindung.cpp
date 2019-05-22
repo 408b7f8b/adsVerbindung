@@ -1,7 +1,7 @@
 #include "adsFunktionen.h"
 
 #include "adsVerbindung.h"
-#include "unistd.h"
+#include <chrono>
 
 void adsVerbindung::beobachten() {
     while (beobachte) {
@@ -20,7 +20,8 @@ void adsVerbindung::beobachten() {
             for (auto& j : read) i.second.push_back(j);
         }
         mtx.unlock();
-        usleep(beobachte_pause_usec);
+
+        std::this_thread::sleep_for(std::chrono::microseconds(beobachte_pause_usec));
     }
 }
 /*
