@@ -56,7 +56,12 @@ int main() {
 
     s->start();
 
-    std::this_thread::sleep_for(std::chrono::seconds(100));;
+    for(uint8_t i = 0; i < 20; ++i){
+        s->schreibeAnhandName("MAIN.typInt", {i});
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 
     s->halt();
 

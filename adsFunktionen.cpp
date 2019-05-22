@@ -102,9 +102,27 @@ std::vector<uint8_t> adsFunktionen::leseAnhandName(long port, const AmsAddr& ser
     return r;
 }
 
-long adsFunktionen::schreibe(long port, const AmsAddr& server, uint32_t indexGroup, uint32_t indexOffset,
-                     std::shared_ptr<uint8_t>& buffer, uint32_t bufferSize) {
-    const auto r = AdsSyncWriteReqEx(port, &server, indexGroup, indexOffset, bufferSize, buffer.get());
+long adsFunktionen::schreibe(long port, const AmsAddr& server, const uint32_t indexGroup, const uint32_t indexOffset, const std::vector<uint8_t>& buffer) {
+
+    if(buffer.empty()) return -1;
+
+    uint8_t buffer_c[buffer.size()] = {0};
+    for(int i = 0; i < buffer.size(); ++i) buffer_c[i] = buffer[i];
+
+    const auto r = AdsSyncWriteReqEx(port, &server, indexGroup, indexOffset, (uint32_t)buffer.size(), buffer_c);
+
+    return r;
+}
+
+long adsFunktionen::schreibeAnhandName(long port, const AmsAddr& server, const std::string& name, const std::vector<uint8_t>& buffer) {
+    const uint32_t handle = holeHandleName(port, server, name);
+    const uint32_t bufferSize = holeSymbolGroesse(port, server, name);
+
+    if(buffer.size() > bufferSize) return -1;
+
+    const auto r = schreibe(port, server, ADSIGRP_SYM_VALBYHND, handle, buffer);
+
+    handleFreigeben(port, server, handle);
 
     return r;
 }

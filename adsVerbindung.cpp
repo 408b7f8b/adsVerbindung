@@ -96,7 +96,9 @@ long adsVerbindung::schliesse() {
 }
 
 long adsVerbindung::leseStatus() {
-    return adsFunktionen::leseStatus(port, ziel);
+    const auto r =  adsFunktionen::leseStatus(port, ziel);
+
+    return r;
 }
 
 std::vector<uint8_t> adsVerbindung::lese(uint32_t indexGroup, uint32_t indexOffset, uint32_t max_length) {
@@ -111,8 +113,18 @@ std::vector<uint8_t> adsVerbindung::leseAnhandName(const std::string& name) {
     return r;
 }
 
-long adsVerbindung::schreibe(uint32_t indexGroup, uint32_t indexOffset, std::shared_ptr<uint8_t>& buffer, uint32_t bufferSize) {
-    const auto r = adsFunktionen::schreibe(port, ziel, indexGroup, indexOffset, buffer, bufferSize);
+long adsVerbindung::schreibe(uint32_t indexGroup, uint32_t indexOffset, const std::vector<uint8_t>& buffer) {
+    if(beobachte) mtx.lock();
+    const auto r = adsFunktionen::schreibe(port, ziel, indexGroup, indexOffset, buffer);
+    if(beobachte) mtx.unlock();
+
+    return r;
+}
+
+long adsVerbindung::schreibeAnhandName(const std::string& name, const std::vector<uint8_t>& buffer) {
+    if(beobachte) mtx.lock();
+    const auto r = adsFunktionen::schreibeAnhandName(port, ziel, name, buffer);
+    if(beobachte) mtx.unlock();
 
     return r;
 }

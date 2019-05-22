@@ -47,8 +47,9 @@ public:
 
     static std::vector<uint8_t> leseAnhandName(long port, const AmsAddr& server, const std::string& name);
 
-    static long schreibe(long port, const AmsAddr& server, uint32_t indexGroup, uint32_t indexOffset,
-                         std::shared_ptr<uint8_t>& buffer, uint32_t bufferSize);
+    static long schreibe(long port, const AmsAddr& server, const uint32_t indexGroup, const uint32_t indexOffset, const std::vector<uint8_t>& buffer);
+
+    static long schreibeAnhandName(long port, const AmsAddr& server, const std::string& name, const std::vector<uint8_t>& buffer);
 };
 
 

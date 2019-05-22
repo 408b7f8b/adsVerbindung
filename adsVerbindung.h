@@ -49,7 +49,7 @@ class adsVerbindung {
                        const std::vector<uint8_t>)> Aenderungsfunktion_beobVariablen;
 
     bool beobachte = false;
-    uint32_t beobachte_pause_usec = 10000;
+
     std::thread beobachte_thread;
 
     void beobachten();
@@ -68,14 +68,20 @@ public:
     long oeffnePort();
 
     void erstelleZiel();
+
     long schliesse();
+
     long leseStatus();
 
     std::vector<uint8_t> lese(uint32_t indexGroup, uint32_t indexOffset, uint32_t max_length);
 
     std::vector<uint8_t> leseAnhandName(const std::string& name);
 
-    long schreibe(uint32_t indexGroup, uint32_t indexOffset, std::shared_ptr<uint8_t>& buffer, uint32_t bufferSize);
+    long schreibe(uint32_t indexGroup, uint32_t indexOffset, const std::vector<uint8_t>& buffer);
+
+    long schreibeAnhandName(const std::string& name, const std::vector<uint8_t>& buffer);
+
+    uint32_t beobachte_pause_usec = 100000;
 
     void beobachteVariable(const std::string& name, bool aenderungsfunktion_aufrufen);
 
@@ -86,6 +92,7 @@ public:
     void start();
 
     void halt();
+
     void setzeAenderungsfunktion(std::function<void(const std::string&, const std::string&, const std::vector<uint8_t>)> funktion);
 };
 
