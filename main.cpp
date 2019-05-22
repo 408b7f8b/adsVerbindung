@@ -1,3 +1,10 @@
+/**
+* @file main.cpp
+* @author D. Breunig
+* @date 22 Mai 2019
+* @brief ADS Verbindung Beispiel
+*/
+
 #include "adsVerbindung.h"
 
 #include <iostream>
