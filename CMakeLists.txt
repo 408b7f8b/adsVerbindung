@@ -13,7 +13,7 @@ endif (WIN32 OR MSVC)
 
 if (UNIX)
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../ADS)
-    target_link_libraries(adsVerbindung AdsLib-Linux)
+    target_link_libraries(adsVerbindung AdsLib-Linux pthread)
 endif (UNIX)
 
 add_executable(adsVerbindungTest main.cpp)
