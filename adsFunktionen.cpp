@@ -106,8 +106,13 @@ long adsFunktionen::schreibe(long port, const AmsAddr& server, const uint32_t in
 
     if(buffer.empty()) return -1;
 
-    uint8_t buffer_c[buffer.size()] = {0};
-    for(int i = 0; i < buffer.size(); ++i) buffer_c[i] = buffer[i];
+#ifdef _WIN32
+	uint8_t buffer_c[65536] = { 0 };
+	for (int i = 0; i < sizeof(buffer_c) && i < buffer.size(); ++i) buffer_c[i] = buffer[i];
+#else
+	uint8_t buffer_c[buffer.size()] = {0};
+	for(int i = 0; i < buffer.size(); ++i) buffer_c[i] = buffer[i];
+#endif
 
     const auto r = AdsSyncWriteReqEx(port, &server, indexGroup, indexOffset, (uint32_t)buffer.size(), buffer_c);
 

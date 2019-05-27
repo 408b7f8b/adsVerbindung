@@ -14,19 +14,24 @@ void callbackfunktion(const std::string& instanz, const std::string& var_name, c
 
     std::cout << instanz << ": " << var_name << " = ";
 
-    size_t s;
-    s = 0;
+	size_t s;
+	s = 0;
 
-    if (var_name == "MAIN.typSubDInt") {
-        s = sizeof(uint64_t);
-    } else if (var_name == "MAIN.typSubUSInt") {
-        s = sizeof(uint16_t);
-    }
+	if (var_name == "MAIN.typSubDInt") {
+		s = sizeof(uint64_t);
+	}
+	else if (var_name == "MAIN.typSubUSInt") {
+		s = sizeof(uint16_t);
+	}
 
     if(s != 0){
-        uint8_t ergebnis[s] = {0};
-
-        for(int i = 0; i < var_wert.size() && i < s; ++i) ergebnis[i] = var_wert[i]; //memcpy?
+#ifdef _WIN32
+		uint8_t ergebnis[65536] = { 0 };
+		for (int i = 0; i < var_wert.size() && i < sizeof(ergebnis); ++i) ergebnis[i] = var_wert[i]; //memcpy?
+#else
+		uint8_t ergebnis[s] = {0};
+		for(int i = 0; i < var_wert.size() && i < s; ++i) ergebnis[i] = var_wert[i]; //memcpy?
+#endif
 
         if (var_name == "MAIN.typSubDInt") {
             std::cout << *(uint64_t*)ergebnis;
