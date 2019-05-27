@@ -17,30 +17,30 @@ um die beckhoff-lib auf windows bauen zu können, müssen folgende workarounds i
 
 size_t Socket::read(uint8_t* buffer, size_t maxBytes, timeval* timeout) const
 ```
-...  
-if ((0 == bytesRead) || (lastError == CONNECTION_CLOSED) || (lastError == CONNECTION_ABORTED)) {  
-    throw std::runtime_error("connection closed by remote");  
-} else {  
-	char errmsg[256];  
-    //LOG_ERROR("read frame failed with error: " << std::dec << strerr(lastError));  
-	LOG_ERROR("read frame failed with error: " << std::dec << strerror_s(errmsg, sizeof(errmsg), lastError));  
-}  
+...
+if ((0 == bytesRead) || (lastError == CONNECTION_CLOSED) || (lastError == CONNECTION_ABORTED)) {
+    throw std::runtime_error("connection closed by remote");
+} else {
+    char errmsg[256];
+    //LOG_ERROR("read frame failed with error: " << std::dec << strerr(lastError));
+    LOG_ERROR("read frame failed with error: " << std::dec << strerror_s(errmsg, sizeof(errmsg), lastError));
+}
 ...
 ```
 
 bool Socket::Select(timeval* timeout) const
 ```
-...  
-	/* and check if socket was correct */  
-if ((1 != state) || (!FD_ISSET(m_Socket, &readSockets))) {  
-    //LOG_ERROR("something strange happen while waiting for socket in state: " <<  
-    //          state << " with error: " << strerror(lastError));  
-	  
-	char errmsg[256];  
-	LOG_ERROR("something strange happen while waiting for socket in state: " <<  
-		state << " with error: " << strerror_s(errmsg, sizeof(errmsg), lastError));  
-  
-    return false;  
-}  
+...
+/* and check if socket was correct */
+if ((1 != state) || (!FD_ISSET(m_Socket, &readSockets))) {
+    //LOG_ERROR("something strange happen while waiting for socket in state: " <<
+    //          state << " with error: " << strerror(lastError));
+
+    char errmsg[256];
+    LOG_ERROR("something strange happen while waiting for socket in state: " <<
+              state << " with error: " << strerror_s(errmsg, sizeof(errmsg), lastError));
+
+    return false;
+}
 ...  
 ```
