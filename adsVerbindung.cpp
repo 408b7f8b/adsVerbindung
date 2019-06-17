@@ -140,6 +140,10 @@ void adsVerbindung::beobachteVariablen(const std::map<std::string, bool>& variab
     for(auto& s : variablen) beobachteVariable(s.first, s.second);
 }
 
+std::uint32_t adsVerbindung::holeGroesseEinerVariable(const std::string& name){
+    return adsFunktionen::holeSymbolGroesse(port, ziel, name);
+}
+
 void adsVerbindung::entferneBeobachtenAlle(){
     mtx.lock();
     beobVariablen.clear();

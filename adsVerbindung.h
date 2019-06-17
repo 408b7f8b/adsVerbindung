@@ -87,6 +87,8 @@ public:
 
     void beobachteVariablen(const std::map<std::string, bool>& variablen);
 
+    std::uint32_t holeGroesseEinerVariable(const std::string& name);
+
     void entferneBeobachtenAlle();
 
     void entferneBeobachten(const std::string& name);
