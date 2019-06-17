@@ -140,6 +140,24 @@ void adsVerbindung::beobachteVariablen(const std::map<std::string, bool>& variab
     for(auto& s : variablen) beobachteVariable(s.first, s.second);
 }
 
+void adsVerbindung::entferneBeobachtenAlle(){
+    mtx.lock();
+    beobVariablen.clear();
+    beobVariablen_rufeFunktion.clear();
+    mtx.unlock();
+}
+
+void adsVerbindung::entferneBeobachten(const std::string& name){
+    mtx.lock();
+    if (!beobVariablen.count(name)) beobVariablen.erase(name);
+    if (!beobVariablen_rufeFunktion.count(name)) beobVariablen_rufeFunktion.erase(name);
+    mtx.unlock();
+}
+
+void adsVerbindung::entferneBeobachten(const std::vector<std::string>& variablen){
+    for(auto& s : variablen) entferneBeobachten(s);
+}
+
 int adsVerbindung::initialisieren() {
     long r = erstelleRoute();
 

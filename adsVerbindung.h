@@ -87,6 +87,12 @@ public:
 
     void beobachteVariablen(const std::map<std::string, bool>& variablen);
 
+    void entferneBeobachtenAlle();
+
+    void entferneBeobachten(const std::string& name);
+
+    void entferneBeobachten(const std::vector<std::string>& variablen);
+
     int initialisieren();
 
     void start();
